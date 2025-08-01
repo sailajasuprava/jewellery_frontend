@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, Loader2 } from 'lucide-react';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Lock, Mail, Loader2 } from "lucide-react";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/v1";
 
 function Login({ onLogin }) {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -30,38 +31,42 @@ function Login({ onLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       return;
     }
     setError(null);
     setSuccess(null);
     setLoading(true);
     try {
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, formData, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/login`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
 
       setSuccess(response.data.message);
       const userData = response.data.data;
       const role = userData.role;
 
-      localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('userRole', role);
-      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("userRole", role);
+      localStorage.setItem("isLoggedIn", "true");
 
-      window.dispatchEvent(new Event('authChange'));
+      window.dispatchEvent(new Event("authChange"));
 
       if (onLogin) {
         onLogin(response.data);
       }
 
-      if (role === 'admin') {
-        navigate('/admin');
+      if (role === "admin") {
+        navigate("/admin");
       } else {
-        navigate('/profile');
+        navigate("/profile");
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred during login');
+      setError(err.response?.data?.message || "An error occurred during login");
     } finally {
       setLoading(false);
     }
@@ -100,11 +105,17 @@ function Login({ onLogin }) {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-slate-700 mb-2"
+            >
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
+              <Mail
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+                size={18}
+              />
               <input
                 type="email"
                 name="email"
@@ -115,17 +126,23 @@ function Login({ onLogin }) {
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white/50"
                 required
                 disabled={loading}
-                aria-describedby={error ? 'email-error' : undefined}
+                aria-describedby={error ? "email-error" : undefined}
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-slate-700 mb-2"
+            >
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
+              <Lock
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+                size={18}
+              />
               <input
                 type="password"
                 name="password"
@@ -136,7 +153,7 @@ function Login({ onLogin }) {
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white/50"
                 required
                 disabled={loading}
-                aria-describedby={error ? 'password-error' : undefined}
+                aria-describedby={error ? "password-error" : undefined}
               />
             </div>
           </div>
@@ -153,7 +170,7 @@ function Login({ onLogin }) {
                   Signing In...
                 </>
               ) : (
-                'Sign In'
+                "Sign In"
               )}
             </button>
           </div>
@@ -161,8 +178,11 @@ function Login({ onLogin }) {
 
         <div className="mt-6 text-center">
           <p className="text-sm text-slate-600">
-            Don't have an account?{' '}
-            <a href="/signup" className="text-teal-600 hover:text-teal-800 font-medium transition-colors">
+            Don't have an account?{" "}
+            <a
+              href="/signup"
+              className="text-teal-600 hover:text-teal-800 font-medium transition-colors"
+            >
               Sign Up
             </a>
           </p>

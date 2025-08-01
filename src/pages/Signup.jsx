@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, Phone, Loader2 } from 'lucide-react';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { User, Mail, Lock, Phone, Loader2 } from "lucide-react";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/v1";
 
 function Signup() {
   const [formData, setFormData] = useState({
-    fullname: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
-    phone: '',
+    fullname: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    phone: "",
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -39,36 +40,49 @@ function Signup() {
     setSuccess(null);
 
     // Basic form validation
-    if (!formData.fullname || !formData.email || !formData.password || !formData.passwordConfirm || !formData.phone) {
-      setError('Please fill in all fields');
+    if (
+      !formData.fullname ||
+      !formData.email ||
+      !formData.password ||
+      !formData.passwordConfirm ||
+      !formData.phone
+    ) {
+      setError("Please fill in all fields");
       return;
     }
     if (formData.password !== formData.passwordConfirm) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
     if (formData.phone.length < 10) {
-      setError('Phone number must be at least 10 digits');
+      setError("Phone number must be at least 10 digits");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await axios.post(`${API_BASE_URL}/auth/signup`, formData, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/signup`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
       setSuccess(response.data.message);
-      setTimeout(() => navigate('/login'), 2000);
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      console.error('Signup Error:', err);
+      console.log(err);
+      console.error("Signup Error:", err);
       if (err.response) {
-        console.error('Backend responded with:', err.response.data);
+        console.error("Backend responded with:", err.response.data);
       } else if (err.request) {
-        console.error('No response received:', err.request);
+        console.error("No response received:", err.request);
       } else {
-        console.error('Error setting up request:', err.message);
+        console.error("Error setting up request:", err.message);
       }
-      setError(err.response?.data?.message || 'An error occurred during signup');
+      setError(
+        err.response?.data?.message || "An error occurred during signup"
+      );
     } finally {
       setLoading(false);
     }
@@ -107,11 +121,17 @@ function Signup() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="fullname" className="block text-sm font-semibold text-slate-700 mb-2">
+            <label
+              htmlFor="fullname"
+              className="block text-sm font-semibold text-slate-700 mb-2"
+            >
               Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
+              <User
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+                size={18}
+              />
               <input
                 type="text"
                 name="fullname"
@@ -122,17 +142,23 @@ function Signup() {
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white/50"
                 required
                 disabled={loading}
-                aria-describedby={error ? 'fullname-error' : undefined}
+                aria-describedby={error ? "fullname-error" : undefined}
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-slate-700 mb-2"
+            >
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
+              <Mail
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+                size={18}
+              />
               <input
                 type="email"
                 name="email"
@@ -143,17 +169,23 @@ function Signup() {
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white/50"
                 required
                 disabled={loading}
-                aria-describedby={error ? 'email-error' : undefined}
+                aria-describedby={error ? "email-error" : undefined}
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-slate-700 mb-2"
+            >
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
+              <Lock
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+                size={18}
+              />
               <input
                 type="password"
                 name="password"
@@ -164,17 +196,23 @@ function Signup() {
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white/50"
                 required
                 disabled={loading}
-                aria-describedby={error ? 'password-error' : undefined}
+                aria-describedby={error ? "password-error" : undefined}
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="passwordConfirm" className="block text-sm font-semibold text-slate-700 mb-2">
+            <label
+              htmlFor="passwordConfirm"
+              className="block text-sm font-semibold text-slate-700 mb-2"
+            >
               Confirm Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
+              <Lock
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+                size={18}
+              />
               <input
                 type="password"
                 name="passwordConfirm"
@@ -185,17 +223,23 @@ function Signup() {
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white/50"
                 required
                 disabled={loading}
-                aria-describedby={error ? 'passwordConfirm-error' : undefined}
+                aria-describedby={error ? "passwordConfirm-error" : undefined}
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 mb-2">
+            <label
+              htmlFor="phone"
+              className="block text-sm font-semibold text-slate-700 mb-2"
+            >
               Phone Number
             </label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
+              <Phone
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+                size={18}
+              />
               <input
                 type="tel"
                 name="phone"
@@ -206,7 +250,7 @@ function Signup() {
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white/50"
                 required
                 disabled={loading}
-                aria-describedby={error ? 'phone-error' : undefined}
+                aria-describedby={error ? "phone-error" : undefined}
               />
             </div>
           </div>
@@ -223,7 +267,7 @@ function Signup() {
                   Creating Account...
                 </>
               ) : (
-                'Create Account'
+                "Create Account"
               )}
             </button>
           </div>
@@ -231,8 +275,11 @@ function Signup() {
 
         <div className="mt-6 text-center">
           <p className="text-sm text-slate-600">
-            Already have an account?{' '}
-            <a href="/login" className="text-teal-600 hover:text-teal-800 font-medium transition-colors">
+            Already have an account?{" "}
+            <a
+              href="/login"
+              className="text-teal-600 hover:text-teal-800 font-medium transition-colors"
+            >
               Sign In
             </a>
           </p>
